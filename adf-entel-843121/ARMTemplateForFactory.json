@@ -509,6 +509,282 @@
 				}
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DF_Bronze_03')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "BRONZE"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_CSV_03_Bronze",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_SQL_Bronze_03",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [],
+					"scriptLines": [
+						"source(output(",
+						"          SERVICIO as string,",
+						"          REGISTRO as string,",
+						"          NUMERO_A as string,",
+						"          IMEI_A as string,",
+						"          {RBS UTILIZADA_A} as string,",
+						"          CELDA_A as string,",
+						"          LATITUD_LONGITUD_A as string,",
+						"          NUMERO_B as string,",
+						"          IMEI_B as string,",
+						"          RBS_UTILIZADA_B as string,",
+						"          CELDA_B as string,",
+						"          LATITUD_LONGITUD_B as string,",
+						"          FECHA as string,",
+						"          DURACION as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> source1",
+						"source1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          servicio as string,",
+						"          registro as string,",
+						"          numero_a as string,",
+						"          imei_a as string,",
+						"          rbs_utilizada_a as string,",
+						"          celda_a as string,",
+						"          latitud_longitud_a as string,",
+						"          numero_b as string,",
+						"          imei_b as string,",
+						"          rbs_utilizada_b as string,",
+						"          celda_b as string,",
+						"          latitud_longitud_b as string,",
+						"          fecha as string,",
+						"          duracion as string",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     truncate:true,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          servicio = SERVICIO,",
+						"          registro = REGISTRO,",
+						"          numero_a = NUMERO_A,",
+						"          imei_a = IMEI_A,",
+						"          rbs_utilizada_a = {RBS UTILIZADA_A},",
+						"          celda_a = CELDA_A,",
+						"          latitud_longitud_a = LATITUD_LONGITUD_A,",
+						"          numero_b = NUMERO_B,",
+						"          imei_b = IMEI_B,",
+						"          rbs_utilizada_b = RBS_UTILIZADA_B,",
+						"          celda_b = CELDA_B,",
+						"          latitud_longitud_b = LATITUD_LONGITUD_B,",
+						"          fecha = FECHA,",
+						"          duracion = DURACION",
+						"     )) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_CSV_03_Bronze')]",
+				"[concat(variables('factoryId'), '/datasets/DS_SQL_Bronze_03')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DF_Bronze_05')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "BRONZE"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_CSV_05_Bronze",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_SQL_Bronze_05",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [],
+					"scriptLines": [
+						"source(output(",
+						"          FECHA_INICIO as string,",
+						"          FECHA_FIN as string,",
+						"          NUMERO as string,",
+						"          IMEI as string,",
+						"          RBS_UTILIZADA as string,",
+						"          CELDA as string,",
+						"          {LATITUD LONGITUD} as string,",
+						"          SUBIDOS as string,",
+						"          DESCARGADOS as string,",
+						"          TOTAL as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> source1",
+						"source1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          fecha_inicio as string,",
+						"          fecha_fin as string,",
+						"          numero as string,",
+						"          imei as string,",
+						"          rbs_utilizada as string,",
+						"          celda as string,",
+						"          latitud_longitud as string,",
+						"          subidos as string,",
+						"          descargados as string,",
+						"          total as string",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     truncate:true,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          fecha_inicio = FECHA_INICIO,",
+						"          fecha_fin = FECHA_FIN,",
+						"          numero = NUMERO,",
+						"          imei = IMEI,",
+						"          rbs_utilizada = RBS_UTILIZADA,",
+						"          celda = CELDA,",
+						"          latitud_longitud = {LATITUD LONGITUD},",
+						"          subidos = SUBIDOS,",
+						"          descargados = DESCARGADOS,",
+						"          total = TOTAL",
+						"     )) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_CSV_05_Bronze')]",
+				"[concat(variables('factoryId'), '/datasets/DS_SQL_Bronze_05')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DF_Bronze_06')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "BRONZE"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_CSV_06_Bronze",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_SQL_Bronze_06",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [],
+					"scriptLines": [
+						"source(output(",
+						"          FECHA_INICIO as string,",
+						"          FECHA_FIN as string,",
+						"          NUMERO as string,",
+						"          IMEI as string,",
+						"          RBS_UTILIZADA as string,",
+						"          CELDA as string,",
+						"          {LATITUD LONGITUD} as string,",
+						"          SUBIDOS as string,",
+						"          DESCARGADOS as string,",
+						"          TOTAL as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> source1",
+						"source1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          fecha_inicio as string,",
+						"          fecha_fin as string,",
+						"          numero as string,",
+						"          imei as string,",
+						"          rbs_utilizada as string,",
+						"          celda as string,",
+						"          latitud_longitud as string,",
+						"          subidos as string,",
+						"          descargados as string,",
+						"          total as string",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     truncate:true,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          fecha_inicio = FECHA_INICIO,",
+						"          fecha_fin = FECHA_FIN,",
+						"          numero = NUMERO,",
+						"          imei = IMEI,",
+						"          rbs_utilizada = RBS_UTILIZADA,",
+						"          celda = CELDA,",
+						"          latitud_longitud = {LATITUD LONGITUD},",
+						"          subidos = SUBIDOS,",
+						"          descargados = DESCARGADOS,",
+						"          total = TOTAL",
+						"     )) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_CSV_06_Bronze')]",
+				"[concat(variables('factoryId'), '/datasets/DS_SQL_Bronze_06')]"
+			]
 		}
 	]
 }

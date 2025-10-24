@@ -265,6 +265,217 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/DS_SQL_Bronze_03')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_SQL_DW_Entel",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "BRONZE"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "servicio",
+						"type": "nvarchar"
+					},
+					{
+						"name": "registro",
+						"type": "nvarchar"
+					},
+					{
+						"name": "numero_a",
+						"type": "nvarchar"
+					},
+					{
+						"name": "imei_a",
+						"type": "nvarchar"
+					},
+					{
+						"name": "rbs_utilizada_a",
+						"type": "nvarchar"
+					},
+					{
+						"name": "celda_a",
+						"type": "nvarchar"
+					},
+					{
+						"name": "latitud_longitud_a",
+						"type": "nvarchar"
+					},
+					{
+						"name": "numero_b",
+						"type": "nvarchar"
+					},
+					{
+						"name": "imei_b",
+						"type": "nvarchar"
+					},
+					{
+						"name": "rbs_utilizada_b",
+						"type": "nvarchar"
+					},
+					{
+						"name": "celda_b",
+						"type": "nvarchar"
+					},
+					{
+						"name": "latitud_longitud_b",
+						"type": "nvarchar"
+					},
+					{
+						"name": "fecha",
+						"type": "nvarchar"
+					},
+					{
+						"name": "duracion",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "bronze",
+					"table": "03"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_SQL_DW_Entel')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_SQL_Bronze_05')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_SQL_DW_Entel",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "BRONZE"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "fecha_inicio",
+						"type": "nvarchar"
+					},
+					{
+						"name": "fecha_fin",
+						"type": "nvarchar"
+					},
+					{
+						"name": "numero",
+						"type": "nvarchar"
+					},
+					{
+						"name": "imei",
+						"type": "nvarchar"
+					},
+					{
+						"name": "rbs_utilizada",
+						"type": "nvarchar"
+					},
+					{
+						"name": "celda",
+						"type": "nvarchar"
+					},
+					{
+						"name": "latitud_longitud",
+						"type": "nvarchar"
+					},
+					{
+						"name": "subidos",
+						"type": "nvarchar"
+					},
+					{
+						"name": "descargados",
+						"type": "nvarchar"
+					},
+					{
+						"name": "total",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "bronze",
+					"table": "05"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_SQL_DW_Entel')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_SQL_Bronze_06')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_SQL_DW_Entel",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "BRONZE"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "fecha_inicio",
+						"type": "nvarchar"
+					},
+					{
+						"name": "fecha_fin",
+						"type": "nvarchar"
+					},
+					{
+						"name": "numero",
+						"type": "nvarchar"
+					},
+					{
+						"name": "imei",
+						"type": "nvarchar"
+					},
+					{
+						"name": "rbs_utilizada",
+						"type": "nvarchar"
+					},
+					{
+						"name": "celda",
+						"type": "nvarchar"
+					},
+					{
+						"name": "latitud_longitud",
+						"type": "nvarchar"
+					},
+					{
+						"name": "subidos",
+						"type": "nvarchar"
+					},
+					{
+						"name": "descargados",
+						"type": "nvarchar"
+					},
+					{
+						"name": "total",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "bronze",
+					"table": "06"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_SQL_DW_Entel')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/LS_SQL_DW_Entel')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",

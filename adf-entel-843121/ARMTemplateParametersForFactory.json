@@ -1,0 +1,24 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "adf-entel-843121"
+		},
+		"LS_SQL_DW_Entel_password": {
+			"value": ""
+		},
+		"LS_Storage_Raw_Entel_connectionString": {
+			"value": ""
+		},
+		"LS_SQL_DW_Entel_properties_typeProperties_server": {
+			"value": "sqlentel843121.database.windows.net"
+		},
+		"LS_SQL_DW_Entel_properties_typeProperties_database": {
+			"value": "DW_Entel"
+		},
+		"LS_SQL_DW_Entel_properties_typeProperties_userName": {
+			"value": "miranda"
+		}
+	}
+}

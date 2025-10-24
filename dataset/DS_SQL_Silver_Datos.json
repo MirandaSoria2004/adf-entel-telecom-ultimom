@@ -1,0 +1,75 @@
+{
+	"name": "DS_SQL_Silver_Datos",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_SQL_DW_Entel",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "SILVER"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "fecha_inicio",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "fecha_fin",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "numero",
+				"type": "nvarchar"
+			},
+			{
+				"name": "imei",
+				"type": "nvarchar"
+			},
+			{
+				"name": "rbs_utilizada",
+				"type": "nvarchar"
+			},
+			{
+				"name": "celda",
+				"type": "nvarchar"
+			},
+			{
+				"name": "latitud",
+				"type": "decimal",
+				"precision": 10,
+				"scale": 7
+			},
+			{
+				"name": "longitud",
+				"type": "decimal",
+				"precision": 10,
+				"scale": 7
+			},
+			{
+				"name": "subidos",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "descargados",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "total",
+				"type": "int",
+				"precision": 10
+			}
+		],
+		"typeProperties": {
+			"schema": "silver",
+			"table": "datos"
+		}
+	}
+}

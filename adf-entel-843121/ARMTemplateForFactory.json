@@ -1124,6 +1124,178 @@
 				"[concat(variables('factoryId'), '/datasets/DS_CSV_06_Bronze')]",
 				"[concat(variables('factoryId'), '/datasets/DS_SQL_Bronze_06')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DF_Silver_Datos')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "SILVER"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_SQL_Bronze_05",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						},
+						{
+							"dataset": {
+								"referenceName": "DS_SQL_Bronze_06",
+								"type": "DatasetReference"
+							},
+							"name": "source2"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_SQL_Silver_Datos",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "union1"
+						},
+						{
+							"name": "SepararLatLong"
+						},
+						{
+							"name": "Limpiar"
+						},
+						{
+							"name": "Reemplazar"
+						},
+						{
+							"name": "Convertir"
+						},
+						{
+							"name": "filtrarNulos"
+						},
+						{
+							"name": "select1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          fecha_inicio as string,",
+						"          fecha_fin as string,",
+						"          numero as string,",
+						"          imei as string,",
+						"          rbs_utilizada as string,",
+						"          celda as string,",
+						"          latitud_longitud as string,",
+						"          subidos as string,",
+						"          descargados as string,",
+						"          total as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     query: 'SELECT * FROM [bronze].[05]',",
+						"     format: 'query') ~> source1",
+						"source(output(",
+						"          fecha_inicio as string,",
+						"          fecha_fin as string,",
+						"          numero as string,",
+						"          imei as string,",
+						"          rbs_utilizada as string,",
+						"          celda as string,",
+						"          latitud_longitud as string,",
+						"          subidos as string,",
+						"          descargados as string,",
+						"          total as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     query: 'SELECT * FROM [bronze].[06]',",
+						"     format: 'query') ~> source2",
+						"source1, source2 union(byName: true)~> union1",
+						"union1 derive(latitud = substring(latitud_longitud, 1, locate(',-', latitud_longitud) - 1),",
+						"          longitud = substring(latitud_longitud, locate(',-', latitud_longitud) + 1, length(latitud_longitud))) ~> SepararLatLong",
+						"SepararLatLong derive(latitud = iif(or(isNull(latitud), or(latitud == '-', latitud == '')), '0.0', latitud),",
+						"          longitud = iif(or(isNull(longitud), or(longitud == '-', longitud == '')), '0.0', longitud)) ~> Limpiar",
+						"Limpiar derive(latitud = replace(latitud, ',', '.'),",
+						"          longitud = replace(longitud, ',', '.')) ~> Reemplazar",
+						"Reemplazar cast(output(",
+						"          fecha_inicio as timestamp 'MM-dd-yyyy HH:mm:ss',",
+						"          fecha_fin as timestamp 'MM-dd-yyyy HH:mm:ss',",
+						"          subidos as integer,",
+						"          descargados as integer,",
+						"          total as integer,",
+						"          latitud as decimal(10,7),",
+						"          longitud as decimal(10,7)",
+						"     ),",
+						"     errors: true) ~> Convertir",
+						"Convertir filter(!isNull(fecha_inicio) && !isNull(fecha_fin)) ~> filtrarNulos",
+						"filtrarNulos select(mapColumn(",
+						"          fecha_inicio,",
+						"          fecha_fin,",
+						"          numero,",
+						"          imei,",
+						"          rbs_utilizada,",
+						"          celda,",
+						"          subidos,",
+						"          descargados,",
+						"          total,",
+						"          latitud,",
+						"          longitud",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> select1",
+						"select1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          fecha_inicio as timestamp,",
+						"          fecha_fin as timestamp,",
+						"          numero as string,",
+						"          imei as string,",
+						"          rbs_utilizada as string,",
+						"          celda as string,",
+						"          latitud as decimal(10,7),",
+						"          longitud as decimal(10,7),",
+						"          subidos as integer,",
+						"          descargados as integer,",
+						"          total as integer",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     truncate:true,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          fecha_inicio,",
+						"          fecha_fin,",
+						"          numero,",
+						"          imei,",
+						"          rbs_utilizada,",
+						"          celda,",
+						"          latitud,",
+						"          longitud,",
+						"          subidos,",
+						"          descargados,",
+						"          total",
+						"     )) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_SQL_Bronze_05')]",
+				"[concat(variables('factoryId'), '/datasets/DS_SQL_Bronze_06')]",
+				"[concat(variables('factoryId'), '/datasets/DS_SQL_Silver_Datos')]"
+			]
 		}
 	]
 }

@@ -511,6 +511,329 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/DS_SQL_Gold_DimFecha')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_SQL_DW_Entel",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "GOLD"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "id_fecha",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "fecha",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					}
+				],
+				"typeProperties": {
+					"schema": "gold",
+					"table": "dim_fecha"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_SQL_DW_Entel')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_SQL_Gold_DimNumero')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_SQL_DW_Entel",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "GOLD"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "id_numero",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "numero",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "gold",
+					"table": "dim_numero"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_SQL_DW_Entel')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_SQL_Gold_DimRadiobase')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_SQL_DW_Entel",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "GOLD"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "id_radiobase",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "radiobase",
+						"type": "nvarchar"
+					},
+					{
+						"name": "celda",
+						"type": "nvarchar"
+					},
+					{
+						"name": "latitud",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 7
+					},
+					{
+						"name": "longitud",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 7
+					}
+				],
+				"typeProperties": {
+					"schema": "gold",
+					"table": "dim_radiobase"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_SQL_DW_Entel')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_SQL_Gold_DimRegistro')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_SQL_DW_Entel",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "GOLD"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "id_registro",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "registro",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "gold",
+					"table": "dim_registro"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_SQL_DW_Entel')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_SQL_Gold_DimServicio')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_SQL_DW_Entel",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "GOLD"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "id_servicio",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "servicio",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "gold",
+					"table": "dim_servicio"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_SQL_DW_Entel')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_SQL_Gold_HechosDatos')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_SQL_DW_Entel",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "GOLD"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "id_datos",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "subidos",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "descargados",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "total",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "id_fecha_inicio",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "id_fecha_fin",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "id_numero",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "id_radiobase",
+						"type": "int",
+						"precision": 10
+					}
+				],
+				"typeProperties": {
+					"schema": "gold",
+					"table": "hechos_datos"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_SQL_DW_Entel')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_SQL_Gold_HechosLlamadas')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_SQL_DW_Entel",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "GOLD"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "id_llamada",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "duracion",
+						"type": "time",
+						"scale": 7
+					},
+					{
+						"name": "id_servicio",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "id_registro",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "id_numero_a",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "id_radiobase_a",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "id_numero_b",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "id_radiobase_b",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "id_fecha",
+						"type": "int",
+						"precision": 10
+					}
+				],
+				"typeProperties": {
+					"schema": "gold",
+					"table": "hechos_llamadas"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_SQL_DW_Entel')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/DS_SQL_Silver_Datos')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -964,625 +1287,6 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/DS_CSV_06_Bronze')]",
 				"[concat(variables('factoryId'), '/datasets/DS_SQL_Bronze_06')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DF_Silver_Datos')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"folder": {
-					"name": "SILVER"
-				},
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "DS_SQL_Bronze_05",
-								"type": "DatasetReference"
-							},
-							"name": "source1"
-						},
-						{
-							"dataset": {
-								"referenceName": "DS_SQL_Bronze_06",
-								"type": "DatasetReference"
-							},
-							"name": "source2"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "DS_SQL_Silver_Datos",
-								"type": "DatasetReference"
-							},
-							"name": "sink1"
-						}
-					],
-					"transformations": [
-						{
-							"name": "union1"
-						},
-						{
-							"name": "SepararLatLong"
-						},
-						{
-							"name": "Limpiar"
-						},
-						{
-							"name": "Reemplazar"
-						},
-						{
-							"name": "Convertir"
-						},
-						{
-							"name": "filtrarNulos"
-						},
-						{
-							"name": "select1"
-						}
-					],
-					"scriptLines": [
-						"source(output(",
-						"          fecha_inicio as string,",
-						"          fecha_fin as string,",
-						"          numero as string,",
-						"          imei as string,",
-						"          rbs_utilizada as string,",
-						"          celda as string,",
-						"          latitud_longitud as string,",
-						"          subidos as string,",
-						"          descargados as string,",
-						"          total as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     isolationLevel: 'READ_UNCOMMITTED',",
-						"     query: 'SELECT * FROM [bronze].[05]',",
-						"     format: 'query') ~> source1",
-						"source(output(",
-						"          fecha_inicio as string,",
-						"          fecha_fin as string,",
-						"          numero as string,",
-						"          imei as string,",
-						"          rbs_utilizada as string,",
-						"          celda as string,",
-						"          latitud_longitud as string,",
-						"          subidos as string,",
-						"          descargados as string,",
-						"          total as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     isolationLevel: 'READ_UNCOMMITTED',",
-						"     query: 'SELECT * FROM [bronze].[06]',",
-						"     format: 'query') ~> source2",
-						"source1, source2 union(byName: true)~> union1",
-						"union1 derive(latitud = substring(latitud_longitud, 1, locate(',-', latitud_longitud) - 1),",
-						"          longitud = substring(latitud_longitud, locate(',-', latitud_longitud) + 1, length(latitud_longitud))) ~> SepararLatLong",
-						"SepararLatLong derive(latitud = iif(or(isNull(latitud), or(latitud == '-', latitud == '')), '0.0', latitud),",
-						"          longitud = iif(or(isNull(longitud), or(longitud == '-', longitud == '')), '0.0', longitud)) ~> Limpiar",
-						"Limpiar derive(latitud = replace(latitud, ',', '.'),",
-						"          longitud = replace(longitud, ',', '.')) ~> Reemplazar",
-						"Reemplazar cast(output(",
-						"          fecha_inicio as timestamp 'MM-dd-yyyy HH:mm:ss',",
-						"          fecha_fin as timestamp 'MM-dd-yyyy HH:mm:ss',",
-						"          subidos as integer,",
-						"          descargados as integer,",
-						"          total as integer,",
-						"          latitud as decimal(10,7),",
-						"          longitud as decimal(10,7)",
-						"     ),",
-						"     errors: true) ~> Convertir",
-						"Convertir filter(!isNull(fecha_inicio) && !isNull(fecha_fin)) ~> filtrarNulos",
-						"filtrarNulos select(mapColumn(",
-						"          fecha_inicio,",
-						"          fecha_fin,",
-						"          numero,",
-						"          imei,",
-						"          rbs_utilizada,",
-						"          celda,",
-						"          subidos,",
-						"          descargados,",
-						"          total,",
-						"          latitud,",
-						"          longitud",
-						"     ),",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> select1",
-						"select1 sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     input(",
-						"          fecha_inicio as timestamp,",
-						"          fecha_fin as timestamp,",
-						"          numero as string,",
-						"          imei as string,",
-						"          rbs_utilizada as string,",
-						"          celda as string,",
-						"          latitud as decimal(10,7),",
-						"          longitud as decimal(10,7),",
-						"          subidos as integer,",
-						"          descargados as integer,",
-						"          total as integer",
-						"     ),",
-						"     deletable:false,",
-						"     insertable:true,",
-						"     updateable:false,",
-						"     upsertable:false,",
-						"     format: 'table',",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     errorHandlingOption: 'stopOnFirstError',",
-						"     mapColumn(",
-						"          fecha_inicio,",
-						"          fecha_fin,",
-						"          numero,",
-						"          imei,",
-						"          rbs_utilizada,",
-						"          celda,",
-						"          latitud,",
-						"          longitud,",
-						"          subidos,",
-						"          descargados,",
-						"          total",
-						"     )) ~> sink1"
-					]
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DS_SQL_Bronze_05')]",
-				"[concat(variables('factoryId'), '/datasets/DS_SQL_Bronze_06')]",
-				"[concat(variables('factoryId'), '/datasets/DS_SQL_Silver_Datos')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DF_Silver_Llamadas')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"folder": {
-					"name": "SILVER"
-				},
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "DS_SQL_Bronze_03",
-								"type": "DatasetReference"
-							},
-							"name": "source1"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "DS_SQL_Silver_Llamadas",
-								"type": "DatasetReference"
-							},
-							"name": "sink1"
-						}
-					],
-					"transformations": [
-						{
-							"name": "LimpiarDuracion"
-						},
-						{
-							"name": "SepararCoordenadasAB"
-						},
-						{
-							"name": "LimpiarCoordenadasAB"
-						},
-						{
-							"name": "ReemplazarSeparadorAB"
-						},
-						{
-							"name": "ConvertirTiposLlamadas"
-						},
-						{
-							"name": "select1"
-						}
-					],
-					"scriptLines": [
-						"source(output(",
-						"          servicio as string,",
-						"          registro as string,",
-						"          numero_a as string,",
-						"          imei_a as string,",
-						"          rbs_utilizada_a as string,",
-						"          celda_a as string,",
-						"          latitud_longitud_a as string,",
-						"          numero_b as string,",
-						"          imei_b as string,",
-						"          rbs_utilizada_b as string,",
-						"          celda_b as string,",
-						"          latitud_longitud_b as string,",
-						"          fecha as string,",
-						"          duracion as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     isolationLevel: 'READ_UNCOMMITTED',",
-						"     query: 'SELECT * FROM [bronze].[03]',",
-						"     format: 'query') ~> source1",
-						"source1 derive(duracion = replace(duracion, '-', '00:00:00')) ~> LimpiarDuracion",
-						"LimpiarDuracion derive(latitud_a = substring(latitud_longitud_a, 1, locate(',-', latitud_longitud_a) - 1),",
-						"          longitud_a = substring(latitud_longitud_a, locate(',-', latitud_longitud_a) + 1, length(latitud_longitud_a)),",
-						"          latitud_b = substring(latitud_longitud_b, 1, locate(',-', latitud_longitud_b) - 1),",
-						"          longitud_b = substring(latitud_longitud_b, locate(',-', latitud_longitud_b) + 1, length(latitud_longitud_b))) ~> SepararCoordenadasAB",
-						"SepararCoordenadasAB derive(latitud_a = iif(or(isNull(latitud_a), or(latitud_a == '-', latitud_a == '')), '0.0', latitud_a),",
-						"          latitud_b = iif(or(isNull(latitud_b), or(latitud_b == '-', latitud_b == '')), '0.0', latitud_b),",
-						"          longitud_a = iif(or(isNull(longitud_a), or(longitud_a == '-', longitud_a == '')), '0.0', longitud_a),",
-						"          longitud_b = iif(or(isNull(longitud_b), or(longitud_b == '-', longitud_b == '')), '0.0', longitud_b)) ~> LimpiarCoordenadasAB",
-						"LimpiarCoordenadasAB derive(latitud_a = replace(latitud_a, ',', '.'),",
-						"          longitud_a = replace(longitud_a, ',', '.'),",
-						"          latitud_b = replace(latitud_b, ',', '.'),",
-						"          longitud_b = replace(longitud_b, ',', '.')) ~> ReemplazarSeparadorAB",
-						"ReemplazarSeparadorAB cast(output(",
-						"          fecha as timestamp 'dd-MM-yyyy HH:mm:ss',",
-						"          duracion as timestamp 'HH:mm:ss',",
-						"          latitud_a as decimal(10,7),",
-						"          longitud_a as decimal(10,7),",
-						"          latitud_b as decimal(10,7),",
-						"          longitud_b as decimal(10,7)",
-						"     ),",
-						"     errors: true) ~> ConvertirTiposLlamadas",
-						"ConvertirTiposLlamadas select(mapColumn(",
-						"          servicio,",
-						"          registro,",
-						"          numero_a,",
-						"          imei_a,",
-						"          rbs_utilizada_a,",
-						"          celda_a,",
-						"          numero_b,",
-						"          imei_b,",
-						"          rbs_utilizada_b,",
-						"          celda_b,",
-						"          fecha,",
-						"          duracion,",
-						"          latitud_a,",
-						"          longitud_a,",
-						"          latitud_b,",
-						"          longitud_b",
-						"     ),",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> select1",
-						"select1 sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     input(",
-						"          servicio as string,",
-						"          registro as string,",
-						"          numero_a as string,",
-						"          imei_a as string,",
-						"          rbs_utilizada_a as string,",
-						"          celda_a as string,",
-						"          latitud_a as decimal(10,7),",
-						"          longitud_a as decimal(10,7),",
-						"          numero_b as string,",
-						"          imei_b as string,",
-						"          rbs_utilizada_b as string,",
-						"          celda_b as string,",
-						"          latitud_b as decimal(10,7),",
-						"          longitud_b as decimal(10,7),",
-						"          fecha as timestamp,",
-						"          duracion as timestamp",
-						"     ),",
-						"     deletable:false,",
-						"     insertable:true,",
-						"     updateable:false,",
-						"     upsertable:false,",
-						"     truncate:true,",
-						"     format: 'table',",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     errorHandlingOption: 'stopOnFirstError',",
-						"     mapColumn(",
-						"          servicio,",
-						"          registro,",
-						"          numero_a,",
-						"          imei_a,",
-						"          rbs_utilizada_a,",
-						"          celda_a,",
-						"          latitud_a,",
-						"          longitud_a,",
-						"          numero_b,",
-						"          imei_b,",
-						"          rbs_utilizada_b,",
-						"          celda_b,",
-						"          latitud_b,",
-						"          longitud_b,",
-						"          fecha,",
-						"          duracion",
-						"     )) ~> sink1"
-					]
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DS_SQL_Bronze_03')]",
-				"[concat(variables('factoryId'), '/datasets/DS_SQL_Silver_Llamadas')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/PL_Bronze_Cargar_Datos')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Limpiar_Tablas_Bronze",
-						"type": "Script",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"linkedServiceName": {
-							"referenceName": "LS_SQL_DW_Entel",
-							"type": "LinkedServiceReference"
-						},
-						"typeProperties": {
-							"scripts": [
-								{
-									"type": "NonQuery",
-									"text": "DELETE FROM [bronze].[03]\nDELETE FROM [bronze].[05]\nDELETE FROM [bronze].[06]"
-								}
-							],
-							"scriptBlockExecutionTimeout": "02:00:00"
-						}
-					},
-					{
-						"name": "Cargar_03_Llamadas",
-						"type": "ExecuteDataFlow",
-						"dependsOn": [
-							{
-								"activity": "Limpiar_Tablas_Bronze",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataflow": {
-								"referenceName": "DF_Bronze_03",
-								"type": "DataFlowReference",
-								"parameters": {},
-								"datasetParameters": {
-									"source1": {},
-									"sink1": {}
-								}
-							},
-							"staging": {},
-							"compute": {
-								"coreCount": 8,
-								"computeType": "General"
-							},
-							"traceLevel": "Fine"
-						}
-					},
-					{
-						"name": "Cargar_05_Datos",
-						"type": "ExecuteDataFlow",
-						"dependsOn": [
-							{
-								"activity": "Cargar_03_Llamadas",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataflow": {
-								"referenceName": "DF_Bronze_05",
-								"type": "DataFlowReference",
-								"parameters": {},
-								"datasetParameters": {
-									"source1": {},
-									"sink1": {}
-								}
-							},
-							"staging": {},
-							"compute": {
-								"coreCount": 8,
-								"computeType": "General"
-							},
-							"traceLevel": "Fine"
-						}
-					},
-					{
-						"name": "Cargar_06_Datos",
-						"type": "ExecuteDataFlow",
-						"dependsOn": [
-							{
-								"activity": "Cargar_05_Datos",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataflow": {
-								"referenceName": "DF_Bronze_06",
-								"type": "DataFlowReference",
-								"parameters": {},
-								"datasetParameters": {
-									"source1": {},
-									"sink1": {}
-								}
-							},
-							"staging": {},
-							"compute": {
-								"coreCount": 8,
-								"computeType": "General"
-							},
-							"traceLevel": "Fine"
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"folder": {
-					"name": "BRONZE"
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/LS_SQL_DW_Entel')]",
-				"[concat(variables('factoryId'), '/dataflows/DF_Bronze_03')]",
-				"[concat(variables('factoryId'), '/dataflows/DF_Bronze_05')]",
-				"[concat(variables('factoryId'), '/dataflows/DF_Bronze_06')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/PL_Silver_Cargar_Datos')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Script1",
-						"type": "Script",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"linkedServiceName": {
-							"referenceName": "LS_SQL_DW_Entel",
-							"type": "LinkedServiceReference"
-						},
-						"typeProperties": {
-							"scripts": [
-								{
-									"type": "NonQuery",
-									"text": "DELETE FROM [silver].[datos];\nDELETE FROM [silver].[llamadas];"
-								}
-							],
-							"scriptBlockExecutionTimeout": "02:00:00"
-						}
-					},
-					{
-						"name": "Data flow1",
-						"type": "ExecuteDataFlow",
-						"dependsOn": [
-							{
-								"activity": "Script1",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataflow": {
-								"referenceName": "DF_Silver_Datos",
-								"type": "DataFlowReference",
-								"parameters": {},
-								"datasetParameters": {
-									"source1": {},
-									"source2": {},
-									"sink1": {}
-								}
-							},
-							"staging": {},
-							"compute": {
-								"coreCount": 8,
-								"computeType": "General"
-							},
-							"traceLevel": "Fine"
-						}
-					},
-					{
-						"name": "Data flow2",
-						"type": "ExecuteDataFlow",
-						"dependsOn": [
-							{
-								"activity": "Data flow1",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataflow": {
-								"referenceName": "DF_Silver_Llamadas",
-								"type": "DataFlowReference",
-								"parameters": {},
-								"datasetParameters": {
-									"source1": {},
-									"sink1": {}
-								}
-							},
-							"staging": {},
-							"compute": {
-								"coreCount": 8,
-								"computeType": "General"
-							},
-							"traceLevel": "Fine"
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"folder": {
-					"name": "SILVER"
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/LS_SQL_DW_Entel')]",
-				"[concat(variables('factoryId'), '/dataflows/DF_Silver_Datos')]",
-				"[concat(variables('factoryId'), '/dataflows/DF_Silver_Llamadas')]"
 			]
 		}
 	]

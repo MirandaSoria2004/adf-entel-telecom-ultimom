@@ -757,6 +757,329 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/DS_SQL_Gold_DimFecha')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_SQL_DW_Entel",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "GOLD"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "id_fecha",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "fecha",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					}
+				],
+				"typeProperties": {
+					"schema": "gold",
+					"table": "dim_fecha"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_SQL_DW_Entel')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_SQL_Gold_DimNumero')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_SQL_DW_Entel",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "GOLD"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "id_numero",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "numero",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "gold",
+					"table": "dim_numero"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_SQL_DW_Entel')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_SQL_Gold_DimRadiobase')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_SQL_DW_Entel",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "GOLD"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "id_radiobase",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "radiobase",
+						"type": "nvarchar"
+					},
+					{
+						"name": "celda",
+						"type": "nvarchar"
+					},
+					{
+						"name": "latitud",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 7
+					},
+					{
+						"name": "longitud",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 7
+					}
+				],
+				"typeProperties": {
+					"schema": "gold",
+					"table": "dim_radiobase"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_SQL_DW_Entel')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_SQL_Gold_DimRegistro')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_SQL_DW_Entel",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "GOLD"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "id_registro",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "registro",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "gold",
+					"table": "dim_registro"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_SQL_DW_Entel')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_SQL_Gold_DimServicio')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_SQL_DW_Entel",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "GOLD"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "id_servicio",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "servicio",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "gold",
+					"table": "dim_servicio"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_SQL_DW_Entel')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_SQL_Gold_HechosDatos')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_SQL_DW_Entel",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "GOLD"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "id_datos",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "subidos",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "descargados",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "total",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "id_fecha_inicio",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "id_fecha_fin",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "id_numero",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "id_radiobase",
+						"type": "int",
+						"precision": 10
+					}
+				],
+				"typeProperties": {
+					"schema": "gold",
+					"table": "hechos_datos"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_SQL_DW_Entel')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_SQL_Gold_HechosLlamadas')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_SQL_DW_Entel",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "GOLD"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "id_llamada",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "duracion",
+						"type": "time",
+						"scale": 7
+					},
+					{
+						"name": "id_servicio",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "id_registro",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "id_numero_a",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "id_radiobase_a",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "id_numero_b",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "id_radiobase_b",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "id_fecha",
+						"type": "int",
+						"precision": 10
+					}
+				],
+				"typeProperties": {
+					"schema": "gold",
+					"table": "hechos_llamadas"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_SQL_DW_Entel')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/DS_SQL_Silver_Datos')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",

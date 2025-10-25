@@ -1,0 +1,45 @@
+{
+	"name": "DS_SQL_Gold_DimRadiobase",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_SQL_DW_Entel",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "GOLD"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "id_radiobase",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "radiobase",
+				"type": "nvarchar"
+			},
+			{
+				"name": "celda",
+				"type": "nvarchar"
+			},
+			{
+				"name": "latitud",
+				"type": "decimal",
+				"precision": 10,
+				"scale": 7
+			},
+			{
+				"name": "longitud",
+				"type": "decimal",
+				"precision": 10,
+				"scale": 7
+			}
+		],
+		"typeProperties": {
+			"schema": "gold",
+			"table": "dim_radiobase"
+		}
+	}
+}

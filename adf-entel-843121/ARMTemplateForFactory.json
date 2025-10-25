@@ -1571,6 +1571,573 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/DF_Gold_DimFecha')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "GOLD"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_SQL_Silver_Llamadas",
+								"type": "DatasetReference"
+							},
+							"name": "FechaLlamadas"
+						},
+						{
+							"dataset": {
+								"referenceName": "DS_SQL_Silver_Datos",
+								"type": "DatasetReference"
+							},
+							"name": "FechaInicio"
+						},
+						{
+							"dataset": {
+								"referenceName": "DS_SQL_Silver_Datos",
+								"type": "DatasetReference"
+							},
+							"name": "FechaFin"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_SQL_Gold_DimFecha",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "union1"
+						},
+						{
+							"name": "OrdenarFechas"
+						},
+						{
+							"name": "FiltrarNulos"
+						},
+						{
+							"name": "aggregate1"
+						},
+						{
+							"name": "select1"
+						},
+						{
+							"name": "union2"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          fecha as timestamp",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     query: 'SELECT DISTINCT fecha FROM [silver].[llamadas]',",
+						"     format: 'query') ~> FechaLlamadas",
+						"source(output(",
+						"          fecha as timestamp",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     query: 'SELECT DISTINCT fecha_inicio as fecha FROM [silver].[datos]',",
+						"     format: 'query') ~> FechaInicio",
+						"source(output(",
+						"          fecha as timestamp",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     query: 'SELECT DISTINCT fecha_fin as fecha FROM [silver].[datos]',",
+						"     format: 'query') ~> FechaFin",
+						"FechaLlamadas, FechaInicio union(byName: true)~> union1",
+						"union2 sort(asc(fecha, true)) ~> OrdenarFechas",
+						"OrdenarFechas filter(!isNull(fecha)) ~> FiltrarNulos",
+						"FiltrarNulos aggregate(groupBy(fecha),",
+						"     fecha2 = count(fecha)) ~> aggregate1",
+						"aggregate1 select(mapColumn(",
+						"          fecha",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> select1",
+						"union1, FechaFin union(byName: true)~> union2",
+						"select1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          id_fecha as integer,",
+						"          fecha as timestamp",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     truncate:true,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          fecha",
+						"     )) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_SQL_Silver_Llamadas')]",
+				"[concat(variables('factoryId'), '/datasets/DS_SQL_Silver_Datos')]",
+				"[concat(variables('factoryId'), '/datasets/DS_SQL_Gold_DimFecha')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DF_Gold_DimNumero')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "GOLD"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_SQL_Silver_Datos",
+								"type": "DatasetReference"
+							},
+							"name": "NumeroDatos"
+						},
+						{
+							"dataset": {
+								"referenceName": "DS_SQL_Silver_Llamadas",
+								"type": "DatasetReference"
+							},
+							"name": "NumeroA"
+						},
+						{
+							"dataset": {
+								"referenceName": "DS_SQL_Silver_Llamadas",
+								"type": "DatasetReference"
+							},
+							"name": "NumeroB"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_SQL_Gold_DimNumero",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "union1"
+						},
+						{
+							"name": "union2"
+						},
+						{
+							"name": "sort1"
+						},
+						{
+							"name": "filter1"
+						},
+						{
+							"name": "aggregate1"
+						},
+						{
+							"name": "select1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          numero as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     query: 'SELECT DISTINCT numero FROM [silver].[datos]',",
+						"     format: 'query') ~> NumeroDatos",
+						"source(output(",
+						"          numero as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     query: 'SELECT DISTINCT numero_a as numero FROM [silver].[llamadas]',",
+						"     format: 'query') ~> NumeroA",
+						"source(output(",
+						"          numero as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     query: 'SELECT DISTINCT numero_b as numero FROM [silver].[llamadas]',",
+						"     format: 'query') ~> NumeroB",
+						"NumeroDatos, NumeroA union(byName: true)~> union1",
+						"union1, NumeroB union(byName: true)~> union2",
+						"union2 sort(asc(numero, true)) ~> sort1",
+						"sort1 filter(!isNull(numero)) ~> filter1",
+						"filter1 aggregate(groupBy(numero),",
+						"     numero2 = count(numero)) ~> aggregate1",
+						"aggregate1 select(mapColumn(",
+						"          numero",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> select1",
+						"select1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          id_numero as integer,",
+						"          numero as string",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     truncate:true,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          numero",
+						"     )) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_SQL_Silver_Datos')]",
+				"[concat(variables('factoryId'), '/datasets/DS_SQL_Silver_Llamadas')]",
+				"[concat(variables('factoryId'), '/datasets/DS_SQL_Gold_DimNumero')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DF_Gold_DimRadiobase')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "GOLD"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_SQL_Silver_Datos",
+								"type": "DatasetReference"
+							},
+							"name": "RadiobaseDatos"
+						},
+						{
+							"dataset": {
+								"referenceName": "DS_SQL_Silver_Llamadas",
+								"type": "DatasetReference"
+							},
+							"name": "RadiobaseA"
+						},
+						{
+							"dataset": {
+								"referenceName": "DS_SQL_Silver_Llamadas",
+								"type": "DatasetReference"
+							},
+							"name": "RadiobaseB"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_SQL_Gold_DimRadiobase",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "union1"
+						},
+						{
+							"name": "union2"
+						},
+						{
+							"name": "sort1"
+						},
+						{
+							"name": "filter1"
+						},
+						{
+							"name": "aggregate1"
+						},
+						{
+							"name": "select1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          radiobase as string,",
+						"          celda as string,",
+						"          latitud as decimal(10,7),",
+						"          longitud as decimal(10,7)",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     query: 'SELECT DISTINCT \\n    rbs_utilizada as radiobase,\\n    celda,\\n    latitud,\\n    longitud\\nFROM [silver].[datos]',",
+						"     format: 'query') ~> RadiobaseDatos",
+						"source(output(",
+						"          radiobase as string,",
+						"          celda as string,",
+						"          latitud as decimal(10,7),",
+						"          longitud as decimal(10,7)",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     query: 'SELECT DISTINCT \\n    rbs_utilizada_a as radiobase,\\n    celda_a as celda,\\n    latitud_a as latitud,\\n    longitud_a as longitud\\nFROM [silver].[llamadas]',",
+						"     format: 'query') ~> RadiobaseA",
+						"source(output(",
+						"          radiobase as string,",
+						"          celda as string,",
+						"          latitud as decimal(10,7),",
+						"          longitud as decimal(10,7)",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     query: 'SELECT DISTINCT \\n    rbs_utilizada_b as radiobase,\\n    celda_b as celda,\\n    latitud_b as latitud,\\n    longitud_b as longitud\\nFROM [silver].[llamadas]',",
+						"     format: 'query') ~> RadiobaseB",
+						"RadiobaseDatos, RadiobaseA union(byName: true)~> union1",
+						"union1, RadiobaseB union(byName: true)~> union2",
+						"union2 sort(asc(radiobase, true)) ~> sort1",
+						"sort1 filter(!isNull(radiobase)) ~> filter1",
+						"filter1 aggregate(groupBy(radiobase,",
+						"          celda,",
+						"          latitud,",
+						"          longitud),",
+						"     radiobase2 = count(radiobase)) ~> aggregate1",
+						"aggregate1 select(mapColumn(",
+						"          radiobase,",
+						"          celda,",
+						"          latitud,",
+						"          longitud",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> select1",
+						"select1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          id_radiobase as integer,",
+						"          radiobase as string,",
+						"          celda as string,",
+						"          latitud as decimal(10,7),",
+						"          longitud as decimal(10,7)",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     truncate:true,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          radiobase,",
+						"          celda,",
+						"          latitud,",
+						"          longitud",
+						"     )) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_SQL_Silver_Datos')]",
+				"[concat(variables('factoryId'), '/datasets/DS_SQL_Silver_Llamadas')]",
+				"[concat(variables('factoryId'), '/datasets/DS_SQL_Gold_DimRadiobase')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DF_Gold_DimRegistro')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "GOLD"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_SQL_Silver_Llamadas",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_SQL_Gold_DimRegistro",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "sort1"
+						},
+						{
+							"name": "filter1"
+						},
+						{
+							"name": "aggregate1"
+						},
+						{
+							"name": "select1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          registro as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     query: 'SELECT DISTINCT registro FROM [silver].[llamadas]',",
+						"     format: 'query') ~> source1",
+						"source1 sort(asc(registro, true)) ~> sort1",
+						"sort1 filter(!isNull(registro)) ~> filter1",
+						"filter1 aggregate(groupBy(registro),",
+						"     registro2 = count(registro)) ~> aggregate1",
+						"aggregate1 select(mapColumn(",
+						"          registro",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> select1",
+						"select1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          id_registro as integer,",
+						"          registro as string",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     truncate:true,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          registro",
+						"     )) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_SQL_Silver_Llamadas')]",
+				"[concat(variables('factoryId'), '/datasets/DS_SQL_Gold_DimRegistro')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DF_Gold_DimServicio')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "GOLD"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_SQL_Silver_Llamadas",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_SQL_Gold_DimServicio",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "sort1"
+						},
+						{
+							"name": "filter1"
+						},
+						{
+							"name": "aggregate1"
+						},
+						{
+							"name": "select1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          servicio as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     query: 'SELECT DISTINCT servicio FROM [silver].[llamadas]',",
+						"     format: 'query') ~> source1",
+						"source1 sort(asc(servicio, true)) ~> sort1",
+						"sort1 filter(!isNull(servicio)) ~> filter1",
+						"filter1 aggregate(groupBy(servicio),",
+						"     servicio2 = count(servicio)) ~> aggregate1",
+						"aggregate1 select(mapColumn(",
+						"          servicio",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> select1",
+						"select1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          id_servicio as integer,",
+						"          servicio as string",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          servicio",
+						"     )) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_SQL_Silver_Llamadas')]",
+				"[concat(variables('factoryId'), '/datasets/DS_SQL_Gold_DimServicio')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/DF_Silver_Datos')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",

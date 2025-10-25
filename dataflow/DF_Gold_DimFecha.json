@@ -1,0 +1,118 @@
+{
+	"name": "DF_Gold_DimFecha",
+	"properties": {
+		"folder": {
+			"name": "GOLD"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_SQL_Silver_Llamadas",
+						"type": "DatasetReference"
+					},
+					"name": "FechaLlamadas"
+				},
+				{
+					"dataset": {
+						"referenceName": "DS_SQL_Silver_Datos",
+						"type": "DatasetReference"
+					},
+					"name": "FechaInicio"
+				},
+				{
+					"dataset": {
+						"referenceName": "DS_SQL_Silver_Datos",
+						"type": "DatasetReference"
+					},
+					"name": "FechaFin"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DS_SQL_Gold_DimFecha",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "union1"
+				},
+				{
+					"name": "OrdenarFechas"
+				},
+				{
+					"name": "FiltrarNulos"
+				},
+				{
+					"name": "aggregate1"
+				},
+				{
+					"name": "select1"
+				},
+				{
+					"name": "union2"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          fecha as timestamp",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     query: 'SELECT DISTINCT fecha FROM [silver].[llamadas]',",
+				"     format: 'query') ~> FechaLlamadas",
+				"source(output(",
+				"          fecha as timestamp",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     query: 'SELECT DISTINCT fecha_inicio as fecha FROM [silver].[datos]',",
+				"     format: 'query') ~> FechaInicio",
+				"source(output(",
+				"          fecha as timestamp",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     query: 'SELECT DISTINCT fecha_fin as fecha FROM [silver].[datos]',",
+				"     format: 'query') ~> FechaFin",
+				"FechaLlamadas, FechaInicio union(byName: true)~> union1",
+				"union2 sort(asc(fecha, true)) ~> OrdenarFechas",
+				"OrdenarFechas filter(!isNull(fecha)) ~> FiltrarNulos",
+				"FiltrarNulos aggregate(groupBy(fecha),",
+				"     fecha2 = count(fecha)) ~> aggregate1",
+				"aggregate1 select(mapColumn(",
+				"          fecha",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"union1, FechaFin union(byName: true)~> union2",
+				"select1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          id_fecha as integer,",
+				"          fecha as timestamp",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     truncate:true,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          fecha",
+				"     )) ~> sink1"
+			]
+		}
+	}
+}

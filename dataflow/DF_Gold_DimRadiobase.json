@@ -1,0 +1,139 @@
+{
+	"name": "DF_Gold_DimRadiobase",
+	"properties": {
+		"folder": {
+			"name": "GOLD"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_SQL_Silver_Datos",
+						"type": "DatasetReference"
+					},
+					"name": "RadiobaseDatos"
+				},
+				{
+					"dataset": {
+						"referenceName": "DS_SQL_Silver_Llamadas",
+						"type": "DatasetReference"
+					},
+					"name": "RadiobaseA"
+				},
+				{
+					"dataset": {
+						"referenceName": "DS_SQL_Silver_Llamadas",
+						"type": "DatasetReference"
+					},
+					"name": "RadiobaseB"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DS_SQL_Gold_DimRadiobase",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "union1"
+				},
+				{
+					"name": "union2"
+				},
+				{
+					"name": "sort1"
+				},
+				{
+					"name": "filter1"
+				},
+				{
+					"name": "aggregate1"
+				},
+				{
+					"name": "select1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          radiobase as string,",
+				"          celda as string,",
+				"          latitud as decimal(10,7),",
+				"          longitud as decimal(10,7)",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     query: 'SELECT DISTINCT \\n    rbs_utilizada as radiobase,\\n    celda,\\n    latitud,\\n    longitud\\nFROM [silver].[datos]',",
+				"     format: 'query') ~> RadiobaseDatos",
+				"source(output(",
+				"          radiobase as string,",
+				"          celda as string,",
+				"          latitud as decimal(10,7),",
+				"          longitud as decimal(10,7)",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     query: 'SELECT DISTINCT \\n    rbs_utilizada_a as radiobase,\\n    celda_a as celda,\\n    latitud_a as latitud,\\n    longitud_a as longitud\\nFROM [silver].[llamadas]',",
+				"     format: 'query') ~> RadiobaseA",
+				"source(output(",
+				"          radiobase as string,",
+				"          celda as string,",
+				"          latitud as decimal(10,7),",
+				"          longitud as decimal(10,7)",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     query: 'SELECT DISTINCT \\n    rbs_utilizada_b as radiobase,\\n    celda_b as celda,\\n    latitud_b as latitud,\\n    longitud_b as longitud\\nFROM [silver].[llamadas]',",
+				"     format: 'query') ~> RadiobaseB",
+				"RadiobaseDatos, RadiobaseA union(byName: true)~> union1",
+				"union1, RadiobaseB union(byName: true)~> union2",
+				"union2 sort(asc(radiobase, true)) ~> sort1",
+				"sort1 filter(!isNull(radiobase)) ~> filter1",
+				"filter1 aggregate(groupBy(radiobase,",
+				"          celda,",
+				"          latitud,",
+				"          longitud),",
+				"     radiobase2 = count(radiobase)) ~> aggregate1",
+				"aggregate1 select(mapColumn(",
+				"          radiobase,",
+				"          celda,",
+				"          latitud,",
+				"          longitud",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"select1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          id_radiobase as integer,",
+				"          radiobase as string,",
+				"          celda as string,",
+				"          latitud as decimal(10,7),",
+				"          longitud as decimal(10,7)",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     truncate:true,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          radiobase,",
+				"          celda,",
+				"          latitud,",
+				"          longitud",
+				"     )) ~> sink1"
+			]
+		}
+	}
+}

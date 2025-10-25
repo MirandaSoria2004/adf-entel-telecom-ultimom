@@ -1,0 +1,118 @@
+{
+	"name": "DF_Gold_DimNumero",
+	"properties": {
+		"folder": {
+			"name": "GOLD"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_SQL_Silver_Datos",
+						"type": "DatasetReference"
+					},
+					"name": "NumeroDatos"
+				},
+				{
+					"dataset": {
+						"referenceName": "DS_SQL_Silver_Llamadas",
+						"type": "DatasetReference"
+					},
+					"name": "NumeroA"
+				},
+				{
+					"dataset": {
+						"referenceName": "DS_SQL_Silver_Llamadas",
+						"type": "DatasetReference"
+					},
+					"name": "NumeroB"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DS_SQL_Gold_DimNumero",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "union1"
+				},
+				{
+					"name": "union2"
+				},
+				{
+					"name": "sort1"
+				},
+				{
+					"name": "filter1"
+				},
+				{
+					"name": "aggregate1"
+				},
+				{
+					"name": "select1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          numero as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     query: 'SELECT DISTINCT numero FROM [silver].[datos]',",
+				"     format: 'query') ~> NumeroDatos",
+				"source(output(",
+				"          numero as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     query: 'SELECT DISTINCT numero_a as numero FROM [silver].[llamadas]',",
+				"     format: 'query') ~> NumeroA",
+				"source(output(",
+				"          numero as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     query: 'SELECT DISTINCT numero_b as numero FROM [silver].[llamadas]',",
+				"     format: 'query') ~> NumeroB",
+				"NumeroDatos, NumeroA union(byName: true)~> union1",
+				"union1, NumeroB union(byName: true)~> union2",
+				"union2 sort(asc(numero, true)) ~> sort1",
+				"sort1 filter(!isNull(numero)) ~> filter1",
+				"filter1 aggregate(groupBy(numero),",
+				"     numero2 = count(numero)) ~> aggregate1",
+				"aggregate1 select(mapColumn(",
+				"          numero",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"select1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          id_numero as integer,",
+				"          numero as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     truncate:true,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          numero",
+				"     )) ~> sink1"
+			]
+		}
+	}
+}
